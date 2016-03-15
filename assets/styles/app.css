@@ -1,0 +1,63 @@
+@import "vendor/bootstrap.min.css";
+@import "vendor/bootstrap-theme.min.css";
+
+body {
+  min-width: 614px;
+  background: #f4f4f4;
+  padding-bottom: 8px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+
+img.logo {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.btn span.icon {
+  display: inline-block;
+  font-size: 18px;
+  padding-left: 5px;
+}
+
+.giveaway {
+  padding: 18px 25px;
+}
+
+.giveaway h4 {
+  text-align: center;
+  color: #3f92c7;
+  margin-bottom: 20px;
+}
+
+.giveaway label {
+  padding-top: 8px;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.giveaway p {
+  padding-top: 8px;
+}
+
+.giveaway .help-block {
+  font-size: 13px;
+  color: #999;
+}
+
+.giveaway .help-block em {
+  display: inline-block;
+  padding: 2px 5px;
+  margin: 0 3px;
+  background: #dedede;
+  border-radius: 4px;
+  color: #555;
+  font-size: 11px;
+  font-family: "monaco", monospace;
+}
+
+.giveaway .generate {
+  text-align: left;
+}
