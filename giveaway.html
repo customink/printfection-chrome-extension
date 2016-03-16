@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Getting Started Extension's Popup</title>
+  <title>Printfection Giveaways</title>
   <link rel="stylesheet" href="assets/styles/app.css">
 </head>
-<body>
+<body class="giveaway-link">
   <div class="container-fluid">
 
     <section class="wrapper"><div class="row">
 
       <div class="col-xs-12 giveaway">
         <img src="images/logo.png" alt="Printfection Logo" class="logo" width="140">
+
+        <div class="alert alert-danger text-center" id="js-alert" style="display:none;"><strong>API Access Error</strong><br>Please make sure your API key has been set in the extention options.</div>
 
         <div class="form-group">
           <label for="js-select-giveaway">Choose Giveaway</label>
@@ -41,7 +43,6 @@
   <!-- Scripts -->
   <script src="assets/scripts/vendor/jquery-1.12.1.min.js"></script>
   <script src="assets/scripts/vendor/bootstrap.min.js"></script>
-  <script src="https://api.printfection.com/v2/printfection.js"></script>
   <script src="assets/scripts/pf.js"></script>
 </body>
 </html>

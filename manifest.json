@@ -13,6 +13,7 @@
   },
   "options_page": "options.html",
   "permissions": [
-    "https://api.printfection.com/"
+    "https://api.printfection.com/",
+    "storage"
   ]
 }

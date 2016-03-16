@@ -1,7 +1,9 @@
 @import "vendor/bootstrap.min.css";
 @import "vendor/bootstrap-theme.min.css";
 
-body {
+/* ------ Giveaway Links ------ */
+
+body.giveaway-link {
   min-width: 614px;
   background: #f4f4f4;
   padding-bottom: 8px;
@@ -22,6 +24,10 @@ img.logo {
 
 .giveaway {
   padding: 18px 25px;
+}
+
+.giveaway .alert {
+  margin-top: 15px;
 }
 
 .giveaway h4 {
@@ -60,4 +66,19 @@ img.logo {
 
 .giveaway .generate {
   text-align: left;
+}
+
+/* ------ Options ------ */
+
+body.options {
+  background: #fff;
+  padding: 25px 30px;
+}
+
+body.options .wrapper {
+  max-width: 600px;
+}
+
+body.options p {
+  padding: 15px 0;
 }

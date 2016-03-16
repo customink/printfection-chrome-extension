@@ -2,12 +2,13 @@
 var resources = {
   //API and data storage
   api_url:              "https://api.printfection.com/v2",
-  api_token:            "",
+  api_key:              null,
   campaigns:            null,
   selected_campaign:    localStorage.selected_campaign,
   order_info:           null,
   last_giveaway_link:   localStorage.last_giveaway_link,
   //Selectors
+  $api_alert:           $('#js-alert'),
   $giveaway_select:     $('#js-select-giveaway'),
   $giveaway_link:       $('.js-create-new-link'),
   $old_link:            $('#js-view-old-link'),
@@ -19,20 +20,28 @@ var resources = {
 var plugin = {
   //Return all campaigns from PF
   get_campaigns: function() {
-    $.ajax({
-      type: "GET",
-      url: resources.api_url + "/campaigns",
-      dataType: "json",
-      headers: {
-        "Authorization": "Basic " + btoa(resources.api_token + ":")
-      },
-      success: function(data) {
-        plugin.choose_campaigns(data);
-      },
-      error: function() {
-        console.log("API Error: Can't return campaigns data.");
-      }
+    chrome.storage.sync.get("stored_api_key", function(data) {
+      resources.api_key = data.stored_api_key;
+      call_ajax();
     });
+
+    //Break ajax call into function that runs on sucessful chrome storage return above
+    function call_ajax() {
+      $.ajax({
+        type: "GET",
+        url: resources.api_url + "/campaigns",
+        dataType: "json",
+        headers: {
+          "Authorization": "Basic " + btoa(resources.api_key + ":")
+        },
+        success: function(data) {
+          plugin.choose_campaigns(data);
+        },
+        error: function() {
+          resources.$api_alert.show();
+        }
+      });
+    }
   },
 
   //Parse campaigns and fill form <select> with <option>s for customer to pick
@@ -71,7 +80,7 @@ var plugin = {
       url: resources.api_url + "/orders",
       dataType: "json",
       headers: {
-        "Authorization": "Basic " + btoa(resources.api_token + ":")
+        "Authorization": "Basic " + btoa(resources.api_key + ":")
       },
       data: JSON.stringify({ campaign_id: resources.selected_campaign }),
       success: function(data) {
@@ -120,10 +129,14 @@ var plugin = {
 
     //Go get a new Giveaway link and show user
     resources.$giveaway_link.click(function(event) {
+      event.preventDefault();
+
       plugin.generate_link();
     });
 
     resources.$old_link.click(function(event) {
+      event.preventDefault();
+
       plugin.display_link();
     });
   },
@@ -138,6 +151,7 @@ var plugin = {
   }
 }
 
+//Fire everything up once document has loaded
 $(document).ready(function() {
   plugin.get_campaigns();
 });
