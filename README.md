@@ -1,4 +1,4 @@
-## Printfection Giveaway link Chrome extension
+## Printfection Chrome Extension
 
 ### Overview
 
