@@ -23,17 +23,33 @@
 
         <div class="text-center generate" id="js-generate-link">
           <a href="#Gift" class="btn btn-lg btn-success js-create-new-link">Generate New Gift Link <span class="icon">&raquo;</span></a>
-          <a href="#Last" class="pull-right btn btn-default" id="js-view-old-link">Show Last Link Sent</a>
+          <a href="#Previous" class="pull-right btn btn-default js-view-old-links">View Your Previous Links</a>
         </div>
 
         <div class="form-group" id="js-view-link" style="display:none;">
           <label for="js-campaign-link">Your Gift Link</label>
           <input type="text" name="campaign-link" id="js-final-link" value="Please generate a new link..." class="form-control text-center"/>
           <p>
-          <a href="#Gift" class="pull-right btn btn-default js-create-new-link">Generate Another Link</a>
-          <span class="pull-left help-block">This gift link has been <em>marked as sent</em> in your campaign.</span>
+            <a href="#Gift" class="pull-right btn btn-success js-create-new-link">Generate Another Link</a>
+            <span class="help-block">This gift link has been <em>marked as sent</em> in your campaign.
+            <br>It can be redeemed only once.</span>
           </p>
         </div>
+      </div>
+
+      <div class="col-xs-12 results" id="js-link-results" style="display:none;">
+        <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width: 21%;">Created&nbsp;On</th>
+            <th style="width: 30%;">Campaign</th>
+            <th>Gift Link URL</th>
+          </tr>
+        </thead>
+        <tbody id="js-results-table">
+
+        </tbody>
+        </table>
       </div>
 
     </div></section><!-- / .wrapper .row -->
@@ -42,6 +58,7 @@
 
   <!-- Scripts -->
   <script src="assets/scripts/vendor/jquery-1.12.1.min.js"></script>
+  <script src="assets/scripts/vendor/jquery.formatDateTime.js"></script>
   <script src="assets/scripts/vendor/bootstrap.min.js"></script>
   <script src="assets/scripts/pf.js"></script>
 </body>
