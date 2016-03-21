@@ -27,6 +27,8 @@ var plugin = {
   prep_resources: function() {
     if (localStorage.giveaway_results) {
       resources.giveaway_results = $.parseJSON(localStorage.giveaway_results);
+    } else {
+      resources.$old_links.hide();
     }
 
     if (localStorage.giveaway_results_dates) {
@@ -107,7 +109,7 @@ var plugin = {
         plugin.store_new_link(data);
       },
       error: function() {
-        console.log("API Error: Can't create new link.");
+        resources.$api_alert.show();
       }
     });
   },
