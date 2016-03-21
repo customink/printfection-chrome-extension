@@ -5,7 +5,8 @@
   "version": "0.1",
   "icons": {
      "48": "pf_48.png",
-    "128": "pf_128.png"
+    "128": "pf_128.png",
+    "256": "pf_256.png"
   },
   "browser_action": {
     "default_title": "Printfection Giveaways",
