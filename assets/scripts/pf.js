@@ -68,7 +68,7 @@ var plugin = {
 
   //Parse campaigns and fill form <select> with <option>s for customer to pick
   choose_campaigns: function(data) {
-    //See if we're received the campaign data, otherwise bail out
+    //See if we've received the campaign data, otherwise bail out
     if (!data) {
       return false;
     };
@@ -77,14 +77,14 @@ var plugin = {
     resources.campaigns = data;
 
     //Return all active Giveaway campaigns and display them in our <select>
-    for (var campaign = 0; campaign < resources.campaigns.data.length; campaign++) {
+    resources.campaigns.data.forEach(function(campaign) {
       if (
-        (resources.campaigns.data[campaign].active == true) &&
-        (resources.campaigns.data[campaign].type == "giveaway" || resources.campaigns.data[campaign].type == "socialgiveaway")
+        (campaign.active == true) &&
+        (campaign.type == "giveaway" || campaign.type == "socialgiveaway")
       ) {
-        resources.$giveaway_select.append($('<option>').val(resources.campaigns.data[campaign].id).text(resources.campaigns.data[campaign].name));
+        resources.$giveaway_select.append($('<option>').val(campaign.id).text(campaign.name));
       };
-    };
+    });
 
     plugin.setup();
     plugin.observe();
@@ -164,17 +164,19 @@ var plugin = {
     resources.$results_table.children('tr').remove();
 
     //Loop our array and generate our results table
-    for (var result = 0; result < resources.giveaway_results.length; result++) {
-      var date = new Date(resources.giveaway_results_dates[result]);
+    resources.giveaway_results.forEach(function(result,index){
+      console.log(result+" index: "+index);
+
+      var date = new Date(resources.giveaway_results_dates[index]);
 
       resources.$results_table.prepend(
         "<tr><td>" + $.formatDateTime('m/dd/y', date) + " at " + $.formatDateTime('g:iia', date)
-        + "</td><td>" + resources.giveaway_results_campaigns[result]
-        + "</td><td><a target='_blank' href='" + resources.giveaway_results[result] + "'>"
-        + resources.giveaway_results[result].replace(/.*?:\/\//g, "")
+        + "</td><td>" + resources.giveaway_results_campaigns[index]
+        + "</td><td><a target='_blank' href='" + result + "'>"
+        + result.replace(/.*?:\/\//g, "")
         + "</a></td></tr>"
       );
-    };
+    });
 
     //Visual feedback for the newest added row
     resources.$results_table.children('tr').first().animate({opacity: 0.35}, 400).animate({opacity: 1}, 400);
