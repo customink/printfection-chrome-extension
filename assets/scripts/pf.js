@@ -7,9 +7,7 @@ var resources = {
   selected_campaign:          localStorage.selected_campaign,
   order_info:                 null,
   last_giveaway_link:         localStorage.last_giveaway_link,
-  giveaway_results:           [],
-  giveaway_results_dates:     [],
-  giveaway_results_campaigns: [],
+  giveaway_redemptions:       [],
   //Selectors
   $api_alert:                 $('#js-alert'),
   $giveaway_select:           $('#js-select-giveaway'),
@@ -25,18 +23,10 @@ var resources = {
 var plugin = {
   //Prep resources from local storage if it exists
   prep_resources: function() {
-    if (localStorage.giveaway_results) {
-      resources.giveaway_results = $.parseJSON(localStorage.giveaway_results);
+    if (localStorage.giveaway_redemptions) {
+      resources.giveaway_redemptions = $.parseJSON(localStorage.giveaway_redemptions);
     } else {
       resources.$old_links.hide();
-    }
-
-    if (localStorage.giveaway_results_dates) {
-      resources.giveaway_results_dates = $.parseJSON(localStorage.giveaway_results_dates);
-    }
-
-    if (localStorage.giveaway_results_campaigns) {
-      resources.giveaway_results_campaigns = $.parseJSON(localStorage.giveaway_results_campaigns);
     }
   },
 
@@ -128,20 +118,22 @@ var plugin = {
     resources.last_giveaway_link = resources.order_info.url;
     localStorage.last_giveaway_link = resources.last_giveaway_link;
 
-    //Prep our JSON Array to store the new data (hold 5 links and meta info)
-    if (resources.giveaway_results.length > 4) {
-      resources.giveaway_results.shift();
-      resources.giveaway_results_dates.shift();
-      resources.giveaway_results_campaigns.shift();
+    var new_redemption = {
+      created_at: new Date(),
+      campaign_name: resources.order_info.campaign.name,
+      url: resources.order_info.url
     };
 
-    //Store URL and Date.now in our local storage array for user later
-    resources.giveaway_results.push(resources.last_giveaway_link);
-    resources.giveaway_results_dates.push(new Date());
-    resources.giveaway_results_campaigns.push(resources.order_info.campaign.name);
-    localStorage.giveaway_results = JSON.stringify(resources.giveaway_results);
-    localStorage.giveaway_results_dates = JSON.stringify(resources.giveaway_results_dates);
-    localStorage.giveaway_results_campaigns = JSON.stringify(resources.giveaway_results_campaigns);
+    //Prep our JSON Array to store the new data (hold 5 links and meta info)
+    if (resources.giveaway_redemptions.length > 4) {
+      resources.giveaway_redemptions.shift();
+    };
+
+    //Store the latest redemption in our giveaway_redemptions array
+    resources.giveaway_redemptions.push(new_redemption);
+
+    //Store same information in our local storage array for use later
+    localStorage.giveaway_redemptions = JSON.stringify(resources.giveaway_redemptions);
 
     plugin.prep_results();
     plugin.display_link();
@@ -164,16 +156,14 @@ var plugin = {
     resources.$results_table.children('tr').remove();
 
     //Loop our array and generate our results table
-    resources.giveaway_results.forEach(function(result,index){
-      console.log(result+" index: "+index);
-
-      var date = new Date(resources.giveaway_results_dates[index]);
+    resources.giveaway_redemptions.forEach(function(result,index) {
+      var date = new Date(result.created_at);
 
       resources.$results_table.prepend(
         "<tr><td>" + $.formatDateTime('m/dd/y', date) + " at " + $.formatDateTime('g:iia', date)
-        + "</td><td>" + resources.giveaway_results_campaigns[index]
-        + "</td><td><a target='_blank' href='" + result + "'>"
-        + result.replace(/.*?:\/\//g, "")
+        + "</td><td>" + result.campaign_name
+        + "</td><td><a target='_blank' href='" + result.url + "'>"
+        + result.url.replace(/.*?:\/\//g, "")
         + "</a></td></tr>"
       );
     });
