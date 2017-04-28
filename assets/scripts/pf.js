@@ -8,6 +8,10 @@ var resources = {
   order_info:                 null,
   last_giveaway_link:         localStorage.last_giveaway_link,
   giveaway_redemptions:       [],
+  total_campaigns:            0,
+  limit:                      100,
+  retrys:                     0,
+
   //Selectors
   $api_alert:                 $('#js-alert'),
   $giveaway_select:           $('#js-select-giveaway'),
@@ -31,14 +35,14 @@ var plugin = {
   },
 
   //Return all campaigns from PF
-  get_campaigns: function() {
+  get_campaigns: function(_offset=0) {
     chrome.storage.sync.get("stored_api_key", function(data) {
       resources.api_key = data.stored_api_key;
-      call_ajax();
+      call_ajax(_offset);
     });
 
     //Break ajax call into function that runs on sucessful chrome storage return above
-    function call_ajax() {
+    function call_ajax(_offset) {
       $.ajax({
         type: "GET",
         url: resources.api_url + "/campaigns",
@@ -46,7 +50,14 @@ var plugin = {
         headers: {
           "Authorization": "Basic " + btoa(resources.api_key + ":")
         },
+        data: { offset:_offset, limit:resources.limit},
         success: function(data) {
+            resources.total_campaigns += data.data.length;
+            resources.retrys++;
+            if (data.data.length >= resources.limit && resources.retrys < 10) {
+              var _new_offset = (resources.total_campaigns/resources.limit)*resources.limit;
+              plugin.get_campaigns(_new_offset);
+            }
           plugin.choose_campaigns(data);
         },
         error: function() {
