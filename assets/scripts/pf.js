@@ -11,6 +11,7 @@ var resources = {
   total_campaigns:            0,
   limit:                      100,
   retrys:                     0,
+  observer_setup:             0,
 
   //Selectors
   $api_alert:                 $('#js-alert'),
@@ -93,6 +94,7 @@ var plugin = {
 
   //Generate and return a link from the selected Giveaway campaign
   generate_link: function() {
+
     //See if a campaign is selected, otherwise bail out
     if (!resources.selected_campaign) {
       return false;
@@ -185,6 +187,9 @@ var plugin = {
 
   //Watch user interaction and respond
   observe: function() {
+
+    if (resources.observer_setup) { return; }
+
     //Save newly selected campaign in local storage
     resources.$giveaway_select.change(function(event) {
       resources.selected_campaign = $(this).val();
@@ -202,6 +207,8 @@ var plugin = {
       event.preventDefault();
       resources.$results_wrapper.toggle();
     });
+
+    resources.observer_setup = 1;
   },
 
   //Check for and display local storage presets
