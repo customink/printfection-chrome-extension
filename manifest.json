@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Printfection Giveaway Link Generator",
   "description": "This extention generates and returns links from a customer's Printfection Giveaway.",
   "version": "0.2.3",
@@ -8,13 +8,15 @@
     "128": "pf_128.png",
     "256": "pf_256.png"
   },
-  "browser_action": {
+  "action": {
     "default_title": "Printfection Giveaways",
     "default_popup": "giveaway.html"
   },
   "options_page": "options.html",
+  "host_permissions": [
+    "https://api.printfection.com/"
+  ],
   "permissions": [
-    "https://api.printfection.com/",
     "storage"
   ]
 }
