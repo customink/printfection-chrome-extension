@@ -4,10 +4,10 @@ var resources = {
   api_url:                    "https://api.printfection.com/v2",
   api_key:                    null,
   campaigns:                  null,
-  selected_campaign:          localStorage.selected_campaign,
+  selected_campaign:          null, // Will be loaded from chrome.storage.local
   order_info:                 null,
-  last_giveaway_link:         localStorage.last_giveaway_link,
-  giveaway_redemptions:       [],
+  last_giveaway_link:         null, // Will be loaded from chrome.storage.local
+  giveaway_redemptions:       [],   // Will be loaded from chrome.storage.local
   total_campaigns:            0,
   limit:                      100,
   retrys:                     0,
@@ -26,14 +26,6 @@ var resources = {
 };
 
 var plugin = {
-  //Prep resources from local storage if it exists
-  prep_resources: function() {
-    if (localStorage.giveaway_redemptions) {
-      resources.giveaway_redemptions = $.parseJSON(localStorage.giveaway_redemptions);
-    } else {
-      resources.$old_links.hide();
-    }
-  },
 
   //Return all campaigns from PF
   get_campaigns: function(_offset=0) {
@@ -127,17 +119,20 @@ var plugin = {
     //Store order data back in our resources object
     resources.order_info = data;
 
-    //Store URL for later use (also in local storage)
+    //Store URL for later use
     resources.last_giveaway_link = resources.order_info.url;
-    localStorage.last_giveaway_link = resources.last_giveaway_link;
 
     var new_redemption = {
-      created_at: new Date(),
+      created_at: new Date().toISOString(), // Store as ISO string for easier parsing from storage
       campaign_name: resources.order_info.campaign.name,
       url: resources.order_info.url
     };
 
     //Prep our JSON Array to store the new data (hold 5 links and meta info)
+    // Ensure giveaway_redemptions is an array before trying to access length
+    if (!Array.isArray(resources.giveaway_redemptions)) {
+        resources.giveaway_redemptions = [];
+    }
     if (resources.giveaway_redemptions.length > 4) {
       resources.giveaway_redemptions.shift();
     };
@@ -145,11 +140,18 @@ var plugin = {
     //Store the latest redemption in our giveaway_redemptions array
     resources.giveaway_redemptions.push(new_redemption);
 
-    //Store same information in our local storage array for use later
-    localStorage.giveaway_redemptions = JSON.stringify(resources.giveaway_redemptions);
-
-    plugin.prep_results();
-    plugin.display_link();
+    //Store information in chrome.storage.local
+    chrome.storage.local.set({
+      last_giveaway_link: resources.last_giveaway_link,
+      giveaway_redemptions: resources.giveaway_redemptions // Store the array/object directly
+    }, function() {
+      if (chrome.runtime.lastError) {
+        console.error("Error saving to chrome.storage in store_new_link: " + chrome.runtime.lastError.message);
+      }
+      // These actions should happen after the data is successfully saved
+      plugin.prep_results();
+      plugin.display_link();
+    });
   },
 
   //Show the last created link to the user
@@ -190,10 +192,14 @@ var plugin = {
 
     if (resources.observer_setup) { return; }
 
-    //Save newly selected campaign in local storage
+    //Save newly selected campaign in chrome.storage.local
     resources.$giveaway_select.change(function(event) {
       resources.selected_campaign = $(this).val();
-      localStorage.selected_campaign = resources.selected_campaign;
+      chrome.storage.local.set({ selected_campaign: resources.selected_campaign }, function() {
+        if (chrome.runtime.lastError) {
+          console.error("Error saving selected_campaign: " + chrome.runtime.lastError.message);
+        }
+      });
     });
 
     //Go get a new Giveaway link and show user
@@ -223,7 +229,36 @@ var plugin = {
 
 //Fire everything up once document has loaded
 $(document).ready(function() {
-  plugin.prep_resources();
-  plugin.prep_results();
-  plugin.get_campaigns();
+  chrome.storage.local.get(['selected_campaign', 'last_giveaway_link', 'giveaway_redemptions'], function(items) {
+    if (chrome.runtime.lastError) {
+      console.error("Error loading from chrome.storage: " + chrome.runtime.lastError.message);
+      // Initialize with defaults or show error to user if critical
+      resources.giveaway_redemptions = [];
+      resources.$old_links.hide();
+    } else {
+      if (items.selected_campaign) {
+        resources.selected_campaign = items.selected_campaign;
+      }
+      if (items.last_giveaway_link) {
+        resources.last_giveaway_link = items.last_giveaway_link;
+      }
+
+      if (items.giveaway_redemptions && Array.isArray(items.giveaway_redemptions)) {
+        resources.giveaway_redemptions = items.giveaway_redemptions.map(item => ({
+          ...item,
+          created_at: new Date(item.created_at) // Ensure created_at is a Date object
+        }));
+      } else {
+        resources.giveaway_redemptions = []; // Initialize if not found or not an array
+      }
+
+      if (resources.giveaway_redemptions.length === 0) {
+          resources.$old_links.hide();
+      }
+    }
+
+    // --- Initialize the rest of the plugin now that data is loaded ---
+    plugin.prep_results(); 
+    plugin.get_campaigns(); 
+  });
 });
