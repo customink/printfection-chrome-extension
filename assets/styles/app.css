@@ -1,6 +1,32 @@
 @import "vendor/bootstrap.min.css";
 @import "vendor/bootstrap-theme.min.css";
 
+/* ------ Swag Pro Branding ------ */
+
+@font-face {
+  font-family: 'Averta';
+  src: url('https://app.printfection.com/assets/core/fonts/Averta-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Averta', sans-serif;
+}
+
+.btn-success {
+  background-color: #00bfff;
+  border-color: #00bfff;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active {
+  background-color: #4499c1;
+  border-color: #4499c1;
+}
+
 /* ------ Giveaway Links ------ */
 
 body.giveaway-link {
