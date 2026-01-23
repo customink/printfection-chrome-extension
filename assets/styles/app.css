@@ -5,7 +5,7 @@
 
 @font-face {
   font-family: 'Averta';
-  src: url('https://app.printfection.com/assets/core/fonts/Averta-Regular.woff2') format('woff2');
+  src: url('../fonts/Averta-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -16,15 +16,22 @@ body {
 
 .btn-success {
   background-color: #00bfff;
+  background-image: none;
   border-color: #00bfff;
+  box-shadow: none;
+  text-shadow: none;
 }
 
 .btn-success:hover,
 .btn-success:focus,
 .btn-success:active,
-.btn-success.active {
+.btn-success.active,
+.btn-success:active:hover,
+.btn-success:active:focus {
   background-color: #4499c1;
+  background-image: none;
   border-color: #4499c1;
+  box-shadow: none;
 }
 
 /* ------ Giveaway Links ------ */
