@@ -1,15 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "Printfection Giveaway Link Generator",
-  "description": "This extention generates and returns links from a customer's Printfection Giveaway.",
-  "version": "0.2.3",
+  "name": "Swag Pro Giveaway Link Generator",
+  "description": "This extension generates and returns links from a customer's Swag Pro Giveaway.",
+  "version": "0.3.0",
   "icons": {
-     "48": "pf_48.png",
-    "128": "pf_128.png",
-    "256": "pf_256.png"
+    "48": "sp_48.png",
+    "128": "sp_128.png",
+    "256": "sp_256.png"
   },
   "action": {
-    "default_title": "Printfection Giveaways",
+    "default_title": "Swag Pro Giveaways",
     "default_popup": "giveaway.html"
   },
   "options_page": "options.html",

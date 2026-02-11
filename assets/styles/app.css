@@ -1,6 +1,39 @@
 @import "vendor/bootstrap.min.css";
 @import "vendor/bootstrap-theme.min.css";
 
+/* ------ Swag Pro Branding ------ */
+
+@font-face {
+  font-family: 'Averta';
+  src: url('../fonts/Averta-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Averta', sans-serif;
+}
+
+.btn-success {
+  background-color: #00bfff;
+  background-image: none;
+  border-color: #00bfff;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.btn-success:active:hover,
+.btn-success:active:focus {
+  background-color: #4499c1;
+  background-image: none;
+  border-color: #4499c1;
+  box-shadow: none;
+}
+
 /* ------ Giveaway Links ------ */
 
 body.giveaway-link {
