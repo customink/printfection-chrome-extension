@@ -1,6 +1,6 @@
 name: printfection-chrome-extension
 
-owner: printfection_2 # team definitions at https://app.opslevel.com/teams
+owner: power-buyer-printfection # team definitions at https://app.opslevel.com/teams
 
 purpose: # multiple choice
   # - do_not_track # demo testing personal - will not be tracked in catalog
