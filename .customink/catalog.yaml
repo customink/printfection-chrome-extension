@@ -3,7 +3,7 @@ name: printfection-chrome-extension
 owner: power-buyer-printfection # team definitions at https://app.opslevel.com/teams
 
 purpose:
-  - other
+- app
 deployment_type: # multiple choice
   # - kubernetes
   # - infrastructure_serverless
