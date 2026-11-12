@@ -1,4 +1,5 @@
 name: printfection-chrome-extension
+language: JavaScript
 
 owner: power-buyer-printfection # team definitions at https://app.opslevel.com/teams
 
@@ -12,7 +13,7 @@ deployment_type: # multiple choice
   # - data
   # - docker-image
 
-tier: tier_2 # Mission-critical service or repository. Failure could result in significant impact to revenue or reputation.
+tier: tier_3 # Mission-critical service or repository. Failure could result in significant impact to revenue or reputation.
 # tier: tier_2 # Customer-facing service or repository. Failure results in degraded experience for customers, although without significant impact to revenue or reputation.
 # tier: tier_3 # Internal service or repository. Failure could result in productivity being compromised within the company.
 # tier: tier_4 # Other service or repository. Failure doesn't result in immediate or significant impact.
