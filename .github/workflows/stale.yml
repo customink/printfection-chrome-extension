@@ -16,7 +16,7 @@ jobs:
     # Workspace for sharing data between steps (if needed in the future)
     # Description: Shared workspace for stale issue/PR processing artifacts
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v11
         with:
           # Comment to add when marking an issue as stale
           stale-issue-message: >
